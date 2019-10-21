@@ -3,6 +3,8 @@
 # Makefile readme (en): <https://www.gnu.org/software/make/manual/html_node/index.html#SEC_Contents>
 
 # [ -f (pwd)/.env ] && include .env || include .env.example;
+COPY_ENV := $(shell [ -f .env ] || cp .env.example .env)
+
 include .env
 export
 
