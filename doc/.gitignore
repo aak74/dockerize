@@ -1,0 +1,5 @@
+node_modules
+*.log
+*.docx
+*.pdf
+src/.vuepress/dist

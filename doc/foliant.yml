@@ -1,0 +1,18 @@
+title: Portal
+
+chapters:
+  - README.md
+
+backend_config:
+  pandoc:
+    # template: !path templates/basic.tex
+    toc: true
+    vars:
+      toc: true
+      toc-depth: 2 
+      title: Документация разработчика
+      year: 2019
+    params:
+      pdf_engine: xelatex
+      listings: true
+      number_sections: true

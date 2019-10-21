@@ -1,0 +1,2 @@
+# Bitrix events
+* * * * * php -f /var/www/html/local/php_interface/cron_events.php >> /var/log/cron.log

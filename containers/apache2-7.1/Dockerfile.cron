@@ -1,0 +1,12 @@
+FROM git.arealidea.ru/hlebprom/portal/apache:0.1
+
+RUN touch /var/log/cron.log
+
+#remember about \n\
+RUN echo "" | crontab
+
+# Имя пользователя
+#RUN usermod -c "" www-data
+#RUN usermod -c "" root
+
+CMD /entrypoint.sh

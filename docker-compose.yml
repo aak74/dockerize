@@ -1,0 +1,65 @@
+version: "3.0"
+
+services:
+  app:
+    build: ./containers/${WEBSERVER}
+    environment:
+      - LOG_LEVEL=${APP_LOG_LEVEL}
+    volumes:
+      - ./src/app:/var/www/html
+      - ./logs/php:/var/log/php
+      - ./logs/app:/log
+    restart: always
+
+  # app-cron:
+  #   build: ./containers/${WEBSERVER}
+  #   environment:
+  #     - LOG_LEVEL=${APP_LOG_LEVEL}
+  #   volumes:
+  #     - ./src/app:/var/www/html
+  #     - ./logs/app-cron:/log
+  #   command: /entrypoint.sh
+  #   restart: always
+
+  mysql:
+    build: ./containers/mariadb
+    environment:
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+    ports:
+      - 3306:3306
+    volumes:
+      - ./logs/mysql:/var/log/mysql
+      - ./data/mysql:/var/lib/mysql
+      - ./data/backup:/backup
+    restart: always
+
+  nginx:
+    build: ./containers/nginx
+    ports:
+      - 8001:80
+    volumes:
+      - ./logs/nginx/:/var/log/nginx
+      - ./src/app:/var/www/html
+    command: nginx -g "daemon off;"
+    restart: always
+
+  # doc:
+  #   build:
+  #     context: ./doc
+  #     dockerfile: Dockerfile
+  #   volumes:
+  #     - ./logs/doc:/var/log/nginx
+  #   restart: always
+
+  mail:
+    image: mailhog/mailhog
+    command: ["-smtp-bind-addr", "0.0.0.0:25"]
+    user: root
+    expose:
+      - 25
+      - 8025
+    ports:
+      - 8025:8025
